@@ -8,6 +8,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.listadepersonagens.R;
@@ -21,12 +22,20 @@ import java.util.List;
 
 public class ListaPersonagemActivity extends AppCompatActivity {
 
+     private final PersonagemDAO dao = new PersonagemDAO();
+
+    //criação de override para lista de personagens
     @Override
-    protected void onCreate(Bundle savedInstanceState){
+    protected void onCreate(@NonNull Bundle savedInstanceState){
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_lista_de_personagem );
+        //setando o nome
         setTitle( "Lista de Personagens" );
 
+        dao.salva(new Personagem( "Ken", "1,80", "02041979" ));
+        dao.salva(new Personagem( "Ryu", "1,90", "03051979" ));
+
+        //pegando o float action button
         FloatingActionButton botaoNovoPersonagem = findViewById( R.id.floatingActionButton );
         botaoNovoPersonagem.setOnClickListener( new View.OnClickListener() {
             @Override
@@ -46,12 +55,11 @@ public class ListaPersonagemActivity extends AppCompatActivity {
         segundoPersonagem.setText( personagem.get(1));
         terceiroPersonagem.setText( personagem.get(2));*/
     }
-
+    //criação do onResume, para que os dados inseridos nao sejam apagados
     @Override
     protected void onResume() {
         super.onResume();
 
-        PersonagemDAO dao = new PersonagemDAO();
 
         ListView listadePersonagens = findViewById( R.id.activity_main_lista_personagem );
         List<Personagem> personagens = dao.todos();
@@ -62,6 +70,7 @@ public class ListaPersonagemActivity extends AppCompatActivity {
                 Personagem personagemEscolhido = personagens.get(posicao);
                 Log.i("posicao", "" + personagemEscolhido );
                 Intent vaiParaFormulario = new Intent(ListaPersonagemActivity.this, FormularioPersonagemActivity.class);
+                vaiParaFormulario.putExtra( "personagem", personagemEscolhido );
                 startActivity( vaiParaFormulario );
             }
         } );
