@@ -1,5 +1,4 @@
 package com.example.listadepersonagens.dao;
-
 import com.example.listadepersonagens.model.Personagem;
 
 import java.util.ArrayList;
@@ -31,7 +30,6 @@ public class PersonagemDAO {
     }
 
     public List<Personagem> todos() {
-
         return  new ArrayList<>(personagens);
     }
 }

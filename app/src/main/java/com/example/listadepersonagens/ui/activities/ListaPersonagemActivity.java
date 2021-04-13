@@ -1,5 +1,4 @@
 package com.example.listadepersonagens.ui.activities;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,8 +15,6 @@ import com.example.listadepersonagens.dao.PersonagemDAO;
 import com.example.listadepersonagens.model.Personagem;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class ListaPersonagemActivity extends AppCompatActivity {
@@ -34,32 +31,25 @@ public class ListaPersonagemActivity extends AppCompatActivity {
 
         dao.salva(new Personagem( "Ken", "1,80", "02041979" ));
         dao.salva(new Personagem( "Ryu", "1,90", "03051979" ));
+        configuraFabNovoPersonagem();
 
+    }
+
+    private void configuraFabNovoPersonagem() {
         //pegando o float action button
         FloatingActionButton botaoNovoPersonagem = findViewById( R.id.floatingActionButton );
         botaoNovoPersonagem.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity( new Intent(ListaPersonagemActivity.this, FormularioPersonagemActivity.class) );
+                startActivity( new Intent( ListaPersonagemActivity.this, FormularioPersonagemActivity.class) );
             }
         } );
-
-        //List<String> personagem = new ArrayList<>( Arrays.asList("Alex", "Ken", "Ryu", "Chun Li"));
-
-
-   /*     TextView primeiroPersonagem = findViewById( R.id.textView );
-        TextView segundoPersonagem = findViewById( R.id.textView2 );
-        TextView terceiroPersonagem = findViewById( R.id.textView3 );
-
-        primeiroPersonagem.setText( personagem.get(0));
-        segundoPersonagem.setText( personagem.get(1));
-        terceiroPersonagem.setText( personagem.get(2));*/
     }
+
     //criação do onResume, para que os dados inseridos nao sejam apagados
     @Override
     protected void onResume() {
         super.onResume();
-
 
         ListView listadePersonagens = findViewById( R.id.activity_main_lista_personagem );
         List<Personagem> personagens = dao.todos();
