@@ -1,22 +1,22 @@
 package com.example.listadepersonagens.model;
+
 import androidx.annotation.NonNull;
 
 import java.io.Serializable;
 
 public class Personagem implements Serializable {
-    private  String nome;
-    private  String altura;
-    private  String nascimento;
+    private String nome;
+    private String altura;
+    private String nascimento;
     private int id = 0;
 
     public Personagem(String nome, String altura, String nascimento) {
-
         this.nome = nome;
         this.altura = altura;
         this.nascimento = nascimento;
     }
-    public Personagem(){
 
+    public Personagem() {
     }
 
     public String getNome() {
@@ -42,16 +42,23 @@ public class Personagem implements Serializable {
     public void setNascimento(String nascimento) {
         this.nascimento = nascimento;
     }
+
     @NonNull
     @Override
-    public String toString(){
+    public String toString() {
         return nome;
     }
-    public void setId(int id){
+
+    public void setId(int id) {
         this.id = id;
     }
-    public  int getId(){
+
+    public int getId() {
         return id;
+    }
+
+    public boolean IdValido() {
+        return id > 0;
     }
 }
 

@@ -1,4 +1,5 @@
 package com.example.listadepersonagens.dao;
+
 import com.example.listadepersonagens.model.Personagem;
 
 import java.util.ArrayList;
@@ -6,30 +7,30 @@ import java.util.List;
 
 public class PersonagemDAO {
 
-    private  final  static List<Personagem> personagens = new ArrayList<>();
-    private  static int contadorDeId = 1;
+    private final static List<Personagem> personagens = new ArrayList<>();
+    private static int contadorDeId = 1;
 
     public void salva(Personagem personagemSalvo) {
-        personagemSalvo.setId(contadorDeId);
-        personagens.add(personagemSalvo);
+        personagemSalvo.setId( contadorDeId );
+        personagens.add( personagemSalvo );
         contadorDeId++;
     }
 
-    public void edita(Personagem personagem){
+    public void edita(Personagem personagem) {
         Personagem personagemEscolhido = null;
-        for(Personagem p:
-        personagens){
-            if(p.getId() == personagem.getId()){
-            personagemEscolhido = p;
+        for (Personagem p :
+                personagens) {
+            if (p.getId() == personagem.getId()) {
+                personagemEscolhido = p;
             }
         }
-        if(personagemEscolhido != null){
+        if (personagemEscolhido != null) {
             int posicaoDoPersonagem = personagens.indexOf( personagemEscolhido );
-            personagens.set( posicaoDoPersonagem,personagem );
+            personagens.set( posicaoDoPersonagem, personagem );
         }
     }
 
     public List<Personagem> todos() {
-        return  new ArrayList<>(personagens);
+        return new ArrayList<>( personagens );
     }
 }

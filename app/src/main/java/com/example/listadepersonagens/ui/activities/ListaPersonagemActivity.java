@@ -1,7 +1,7 @@
 package com.example.listadepersonagens.ui.activities;
+
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -17,53 +17,66 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.List;
 
+import static com.example.listadepersonagens.ui.activities.ConstantesActivities.CHAVE_PERSONAGEM;
+
 public class ListaPersonagemActivity extends AppCompatActivity {
 
-     private final PersonagemDAO dao = new PersonagemDAO();
+    public static final String TITULO_APPBAR = "Lista de Personagens";
+    private final PersonagemDAO dao = new PersonagemDAO();
 
-    //criação de override para lista de personagens
     @Override
-    protected void onCreate(@NonNull Bundle savedInstanceState){
+    protected void onCreate(@NonNull Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
         setContentView( R.layout.activity_lista_de_personagem );
-        //setando o nome
-        setTitle( "Lista de Personagens" );
-
-        dao.salva(new Personagem( "Ken", "1,80", "02041979" ));
-        dao.salva(new Personagem( "Ryu", "1,90", "03051979" ));
+        setTitle( TITULO_APPBAR );
         configuraFabNovoPersonagem();
-
     }
 
     private void configuraFabNovoPersonagem() {
-        //pegando o float action button
         FloatingActionButton botaoNovoPersonagem = findViewById( R.id.floatingActionButton );
         botaoNovoPersonagem.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity( new Intent( ListaPersonagemActivity.this, FormularioPersonagemActivity.class) );
+                abreFormularioSalva();
             }
         } );
     }
 
-    //criação do onResume, para que os dados inseridos nao sejam apagados
+    private void abreFormularioSalva() {
+        startActivity( new Intent( ListaPersonagemActivity.this, FormularioPersonagemActivity.class ) );
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
+        configuraLista();
+    }
 
+    private void configuraLista() {
         ListView listadePersonagens = findViewById( R.id.activity_main_lista_personagem );
-        List<Personagem> personagens = dao.todos();
-        listadePersonagens.setAdapter( new ArrayAdapter<>( this, android.R.layout.simple_list_item_1, personagens ) );
+        final List<Personagem> personagens = dao.todos();
+        listaDePersonagens( listadePersonagens, personagens );
+        configuraItemPorClique( listadePersonagens );
+    }
+
+    private void configuraItemPorClique(ListView listadePersonagens) {
         listadePersonagens.setOnItemClickListener( new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int posicao, long id) {
-                Personagem personagemEscolhido = personagens.get(posicao);
-                Log.i("posicao", "" + personagemEscolhido );
-                Intent vaiParaFormulario = new Intent(ListaPersonagemActivity.this, FormularioPersonagemActivity.class);
-                vaiParaFormulario.putExtra( "personagem", personagemEscolhido );
-                startActivity( vaiParaFormulario );
+            public void onItemClick(AdapterView<?> adapterView, View view, int posicao, long id) {
+                Personagem personagemEscolhido = (Personagem) adapterView.getItemAtPosition( posicao );
+                abreFormularioModoEditar( personagemEscolhido );
             }
-        } );
+        });
+    }
+
+    private void abreFormularioModoEditar(Personagem personagem) {
+        Intent vaiParaFormulario = new Intent( ListaPersonagemActivity.this, FormularioPersonagemActivity.class );
+        vaiParaFormulario.putExtra( CHAVE_PERSONAGEM, personagem );
+        startActivity( vaiParaFormulario );
+    }
+
+    private void listaDePersonagens(ListView listadePersonagens, List<Personagem> personagens) {
+        listadePersonagens.setAdapter( new ArrayAdapter<>( this, android.R.layout.simple_list_item_1, personagens ) );
     }
 }
 
