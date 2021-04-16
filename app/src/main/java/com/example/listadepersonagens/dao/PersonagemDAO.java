@@ -1,5 +1,7 @@
 package com.example.listadepersonagens.dao;
 
+import android.app.Person;
+
 import com.example.listadepersonagens.model.Personagem;
 
 import java.util.ArrayList;
@@ -16,22 +18,32 @@ public class PersonagemDAO {
         personagens.add( personagemSalvo );
         contadorDeId++;
     }
+    private void atualizaId(){contadorDeId++;}
 //metodo onde se faz a edição dos personagens ja criados
     public void edita(Personagem personagem) {
-        Personagem personagemEscolhido = null;
-        for (Personagem p :
-                personagens) {
-            if (p.getId() == personagem.getId()) {
-                personagemEscolhido = p;
-            }
-        }
-        if (personagemEscolhido != null) {
-            int posicaoDoPersonagem = personagens.indexOf( personagemEscolhido );
-            personagens.set( posicaoDoPersonagem, personagem );
+    Personagem personagemEscolhido = buscaPersonagemID( personagem );
+    if(personagemEscolhido!=null){
+        int posicaoDoPersonagem = personagens.indexOf(personagemEscolhido );
+        personagens.set(posicaoDoPersonagem,personagem );
         }
     }
+    private Personagem buscaPersonagemID(Personagem personagem){
+        for(Personagem p:
+        personagens){
+            if(p.getId()== personagem.getId()){
+                return p;
+            }
+        }
+        return  null;
+    }
+    public List<Personagem>todos(){
+        return  new ArrayList<>(personagens);
+    }
 
-    public List<Personagem> todos() {
-        return new ArrayList<>( personagens );
+    public void remove(Personagem personagem) {
+        Personagem personagemDevolvido = buscaPersonagemID(personagem);
+        if(personagemDevolvido != null){
+            personagens.remove( personagemDevolvido);
+        }
     }
 }
